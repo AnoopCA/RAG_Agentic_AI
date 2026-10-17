@@ -9,37 +9,22 @@ from langgraph.types import Send
 
 model = ChatOpenAI(model="gpt-4.1-mini", temperature=0)
 
-
 class OverallState(TypedDict):
     task: str
     subtasks: list[str]
     results: Annotated[list[str], operator.add]
     final_answer: str
 
-
 class WorkerState(TypedDict):
     task: str
     subtask: str
 
-
 def planner(state: OverallState) -> dict:
-    response = model.invoke([
-        SystemMessage(content="""
-Break the task into independent subtasks.
-Return only a numbered list, with one subtask per line.
-Create as many subtasks as needed, usually 2 to 5.
-"""),
-        HumanMessage(content=state["task"]),
-    ])
-
-    subtasks = [
-        line.split(".", 1)[-1].strip()
-        for line in response.content.splitlines()
-        if line.strip() and any(c.isalpha() for c in line)
-    ]
-
+    response = model.invoke([SystemMessage(content="""Break the task into independent subtasks. 
+               Return only a numbered list, with one subtask per line. Create as many subtasks as needed, usually 2 to 5."""),
+               HumanMessage(content=state["task"]),])
+    subtasks = [line.split(".", 1)[-1].strip() for line in response.content.splitlines() if line.strip() and any(c.isalpha() for c in line)]
     return {"subtasks": subtasks}
-
 
 def dispatch(state: OverallState):
     return [
