@@ -49,7 +49,6 @@ for agent_name in ("researcher", "coder", "analyst"):
     builder.add_edge(agent_name, "manager")
 
 graph = builder.compile()
-result = graph.invoke({"task": "Build a Python function to identify prime numbers and test it.",
-                       "history": [], "next_agent": "", "result": "", "iterations": 0,})
+result = graph.invoke({"task": "Build a Python function to identify prime numbers and test it.", "history": [], "next_agent": "", "result": "", "iterations": 0,})
 
 print(result["result"])
