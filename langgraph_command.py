@@ -50,5 +50,4 @@ for agent_name in ("researcher", "coder", "analyst"):
 
 graph = builder.compile()
 result = graph.invoke({"task": "Build a Python function to identify prime numbers and test it.", "history": [], "next_agent": "", "result": "", "iterations": 0,})
-
 print(result["result"])
