@@ -10,3 +10,18 @@ from langchain_groq import ChatGroq
 from langchain_classic.prompts import PromptTemplate
 from langchain_classic.schema import HumanMessage
 
+def process_all_PDFs(PDF_Directory):
+    all_documents = []
+    pdf_path = Path(PDF_Directory)
+    pdf_files = list(pdf_path.glob("**/*.pdf"))
+
+    for pdf_file in pdf_files:
+        loader = PyPDFLoader(str(pdf_file))
+        documents = loader.load()
+        for doc in documents:
+            doc.metadata['source_file'] = pdf_file.name
+            doc.metadata['file_type'] = "pdf"
+        all_documents.extend(documents)
+
+    print(f"Total documents loaded:{(len(all_documents))}")
+    return all_documents
