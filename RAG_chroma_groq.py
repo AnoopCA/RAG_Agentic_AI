@@ -25,3 +25,13 @@ def process_all_PDFs(PDF_Directory):
 
     print(f"Total documents loaded:{(len(all_documents))}")
     return all_documents
+
+def split_documents(documents, chunk_size, chunk_overlap):
+    text_splitter = RecursiveCharacterTextSplitter(
+        chunk_size = chunk_size,
+        chunk_overlap = chunk_overlap,
+        length_function = len,
+        separators = ["\\n", "\n", " ", ""]
+    )
+    split_docs = text_splitter.split_documents(documents)
+    return split_docs
