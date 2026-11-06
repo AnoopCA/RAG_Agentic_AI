@@ -35,3 +35,11 @@ def split_documents(documents, chunk_size, chunk_overlap):
     )
     split_docs = text_splitter.split_documents(documents)
     return split_docs
+
+class EmbeddingManager:
+    def __init__(self, model_name: str = "all-MiniLM-L6-v2"):
+        self.model = SentenceTransformer(model_name)
+    
+    def generate_embeddings(self, texts):
+        embeddings = self.model.encode(texts, show_progress_bar=True)
+        return embeddings
